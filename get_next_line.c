@@ -6,7 +6,7 @@
 /*   By: mahola <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 16:46:36 by mahola            #+#    #+#             */
-/*   Updated: 2019/11/19 18:06:05 by mahola           ###   ########.fr       */
+/*   Updated: 2019/11/27 18:37:51 by mahola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static int	parse_line(char **mem, int fd, char **line, int ret)
 	if (!ft_strlen(mem[fd]) && !ret)
 	{
 		ft_strdel(&mem[fd]);
-		*line = NULL;
 		return (0);
 	}
 	if (!mem[fd][len])
@@ -43,12 +42,12 @@ static int	parse_line(char **mem, int fd, char **line, int ret)
 
 int			get_next_line(const int fd, char **line)
 {
-	static char	*mem[4864];
+	static char	*mem[4865];
 	char		*tmp;
 	char		buf[BUFF_SIZE + 1];
 	int			len;
 
-	if (fd < 0 || !line || read(fd, buf, 0) < 0 || fd >= 4864)
+	if (fd < 0 || !line || read(fd, buf, 0) < 0 || fd > 4864)
 		return (-1);
 	if (!mem[fd] && !(mem[fd] = ft_strnew(1)))
 		return (-1);

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mahola <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/12 17:24:49 by mahola            #+#    #+#             */
-/*   Updated: 2019/11/19 18:02:10 by mahola           ###   ########.fr       */
+/*   Created: 2019/11/27 19:16:46 by mahola            #+#    #+#             */
+/*   Updated: 2019/11/27 19:23:19 by mahola           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,35 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int		main(int argc, char **argv)
+static int	opensesame(char *name)
 {
-	int		fd;
-	char	*line;
+	return (open(name, O_RDONLY));
+}
 
-	if (argc > 1)
+static void	read_all(int fd)
+{
+	char	*output;
+	int		rtn;
+
+	output = NULL;
+	while ((rtn = get_next_line(fd, &output)) > 0)
 	{
-		if ((fd = open(argv[1], O_RDONLY)) >= 0)
-		{
-			while (get_next_line(fd, &line) > 0)
-				printf("%s\n", line);
-			close(fd);
-		}
-		else
-			printf("Error opening file");
+		printf("%s\n", output);
+		free(output);
+	}
+}
+
+int			main(int argc, char **argv)
+{
+	int fd;
+
+	if (argc == 1)
+		read_all(0);
+	if (argc == 2)
+	{
+		fd = opensesame(argv[1]);
+		read_all(fd);
+		close(fd);
 	}
 	return (0);
 }
